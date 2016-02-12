@@ -24,6 +24,11 @@ namespace HotelReso
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("I can't believe you actually pressed it!", "I'm Impressed!", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+        }
+
         //add form load
     }
 }
