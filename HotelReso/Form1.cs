@@ -24,6 +24,11 @@ namespace HotelReso
 
         }
 
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
         //add form load
     }
 }
