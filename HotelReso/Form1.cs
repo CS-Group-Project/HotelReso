@@ -19,6 +19,11 @@ namespace HotelReso
             InitializeComponent();
         }
 
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
         //add form load
     }
 }
