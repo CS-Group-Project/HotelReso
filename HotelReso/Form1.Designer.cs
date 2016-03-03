@@ -72,7 +72,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Table Number (1-9)";
+            this.label3.Text = "Table Number (1-8)";
             // 
             // label4
             // 
