@@ -27,15 +27,6 @@ namespace HotelReso
         {
             getData();
         }
-        //private void label3_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    MessageBox.Show("I can't believe you actually pressed it!", "I'm Impressed!", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-        //}
 
         private void getData()
         {
@@ -76,8 +67,8 @@ namespace HotelReso
                 {
                     DataRow dr = ds.Tables["tReservations"].NewRow();
                     dr["TableNo"] = Convert.ToInt32(txtTableNum.Text);
-                    dr["Date"] = txtDate.Text;
-                    dr["Time"] = txtTime.Text;
+                    dr["Date"] = datePicker.Text;
+                    dr["Time"] = timePicker.Text;
                     dr["Duration"] = Convert.ToDouble(txtDuration.Text);
                     dr["Name"] = txtName.Text;
                     dr["Telephone"] = txtTel.Text;
@@ -145,13 +136,13 @@ namespace HotelReso
 
         private void clearText()
         {
-            txtDate.Text = "";
-            txtTime.Text = "";
+            datePicker.Text = "";
+            timePicker.Text = "";
             txtTableNum.Text = "";
             txtDuration.Text = "";
             txtName.Text = "";
             txtTel.Text = "";
-            txtDate.Focus();
+            datePicker.Focus();
             dg1.ClearSelection();
         }
 
@@ -166,11 +157,11 @@ namespace HotelReso
             {
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
-                    if(txtDate.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
+                    if(datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
                     {
                         if(txtTableNum.Text.Equals(dg1.Rows[i].Cells[2].Value.ToString()))
                         {
-                            if(txtTime.Text.Equals(dg1.Rows[i].Cells[1].Value.ToString()))
+                            if(timePicker.Text.Equals(dg1.Rows[i].Cells[1].Value.ToString()))
                             {
                                 MessageBox.Show("A reservation already exists for this table at this time. Please select a different time or a different table", "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 txtTableNum.Focus();
