@@ -214,6 +214,16 @@ namespace HotelReso
             setControlState("u/d");
         }
 
+        private void datePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
         
         //add form load
     }
