@@ -192,6 +192,17 @@ namespace HotelReso
             }
         }
 
+        private void datePicker_ValueChanged(object sender, EventArgs e)
+        {
+            //just shows the format of how date is displayed
+            MessageBox.Show(((DateTimePicker)sender).Text, "Time picked");
+        }
+
+        private void timePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
     
         
 

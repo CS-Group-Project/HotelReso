@@ -195,6 +195,7 @@
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(200, 26);
             this.datePicker.TabIndex = 19;
+            this.datePicker.ValueChanged += new System.EventHandler(this.datePicker_ValueChanged);
             // 
             // timePicker
             // 
@@ -203,6 +204,7 @@
             this.timePicker.Name = "timePicker";
             this.timePicker.Size = new System.Drawing.Size(200, 26);
             this.timePicker.TabIndex = 20;
+            this.timePicker.ValueChanged += new System.EventHandler(this.timePicker_ValueChanged);
             // 
             // Form1
             // 
