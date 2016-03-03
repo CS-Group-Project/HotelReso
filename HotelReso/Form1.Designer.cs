@@ -14,7 +14,7 @@
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
+            {                                                                                        
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -72,7 +72,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Table Number (1-8)";
+            this.label3.Text = "Table Number (1-9)";
             // 
             // label4
             // 
@@ -86,7 +86,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 270);
+            this.label5.Location = new System.Drawing.Point(32, 276);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(107, 13);
             this.label5.TabIndex = 5;
