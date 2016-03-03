@@ -17,6 +17,7 @@ namespace HotelReso
         private SqlConnection conn = null;
         private SqlDataAdapter da = null;
         private DataSet ds = null;
+        private int rowIndex = 0;
 
         public Form1()
         {
@@ -26,7 +27,9 @@ namespace HotelReso
         private void Form1_Load(object sender, EventArgs e)
         {
             getData();
+            dg1.Click += dg1_Click;
         }
+
 
         private void getData()
         {
@@ -72,6 +75,7 @@ namespace HotelReso
                     dr["Duration"] = Convert.ToDouble(txtDuration.Text);
                     dr["Name"] = txtName.Text;
                     dr["Telephone"] = txtTel.Text;
+                    dr["NumberOfGuests"] = txtGuestsNo.Text;
 
                     ds.Tables["tReservations"].Rows.Add(dr);
                     updateDB();
@@ -87,7 +91,11 @@ namespace HotelReso
 
         private void cmdDelete_Click(object sender, EventArgs e)
         {
-
+            if(MessageBox.Show("Are you sure you want to delete this reservation?", "Delete Reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            {
+                ds.Tables["tReservations"].Rows[rowIndex].Delete();
+                updateDB();
+            }
         }
 
         private void updateDB()
@@ -191,9 +199,20 @@ namespace HotelReso
                 cmdDelete.Enabled = true;
             }
         }
+      
+        void dg1_Click(object sender, EventArgs e)
+        {
+            rowIndex = dg1.CurrentRow.Index;
 
-    
-        
+            dg1.CurrentRow.Selected = true;
+            datePicker.Text = dg1.CurrentRow.Cells[0].Value.ToString();
+            timePicker.Text = dg1.CurrentRow.Cells[1].Value.ToString();
+            txtTableNum.Text = dg1.CurrentRow.Cells[2].Value.ToString();
+            txtDuration.Text = dg1.CurrentRow.Cells[3].Value.ToString();
+            txtName.Text = dg1.CurrentRow.Cells[4].Value.ToString();
+            txtTel.Text = dg1.CurrentRow.Cells[5].Value.ToString();
+            setControlState("u/d");
+        }
 
         
         //add form load
