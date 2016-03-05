@@ -161,10 +161,24 @@ namespace HotelReso
 
         private bool isValidReservation(string state)
         {
+            
             if(state.Equals("i"))
             {
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
+                    //gets the duration hours of each row
+                    int durationHours = Convert.ToInt32(dg1.Rows[i].Cells[3].Value);
+                    
+                    //make a timespan new timespan struct using the duratino hours for i reservation
+                    TimeSpan duration = new TimeSpan(durationHours, 0, 0);
+
+                    //add the duration timespan to reservation i start time
+                    DateTime currentResoStartTime = Convert.ToDateTime(dg1.Rows[i].Cells[1].Value.ToString());
+                    DateTime currentResoEndTime = currentResoStartTime.Add(duration);
+
+                    //compare the reservation i end time to incoming reservation start time
+                    int compareTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+
                     if(datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
                     {
                         if(txtTableNum.Text.Equals(dg1.Rows[i].Cells[2].Value.ToString()))
@@ -175,7 +189,14 @@ namespace HotelReso
                                 txtTableNum.Focus();
                                 return false;
                             }
-                            //else if(txtTime)
+                            // compareTime returns -1 if t1 is earlier than t2
+                            else if(compareTime < 0)
+                            {
+                                string message = "An earlier reservation for this table finishes at " + currentResoEndTime + ". Please select a later time or a different table";
+                                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                txtTableNum.Focus();
+                                return false;
+                            }
                         }
                     }
                 }

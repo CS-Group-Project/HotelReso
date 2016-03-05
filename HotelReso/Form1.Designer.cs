@@ -99,21 +99,21 @@
             this.txtName.Location = new System.Drawing.Point(28, 237);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(147, 20);
-            this.txtName.TabIndex = 8;
+            this.txtName.TabIndex = 5;
             // 
             // txtTel
             // 
             this.txtTel.Location = new System.Drawing.Point(28, 292);
             this.txtTel.Name = "txtTel";
             this.txtTel.Size = new System.Drawing.Size(149, 20);
-            this.txtTel.TabIndex = 9;
+            this.txtTel.TabIndex = 6;
             // 
             // cmdInsert
             // 
             this.cmdInsert.Location = new System.Drawing.Point(28, 384);
             this.cmdInsert.Name = "cmdInsert";
             this.cmdInsert.Size = new System.Drawing.Size(149, 30);
-            this.cmdInsert.TabIndex = 10;
+            this.cmdInsert.TabIndex = 8;
             this.cmdInsert.Text = "Insert";
             this.cmdInsert.UseVisualStyleBackColor = true;
             this.cmdInsert.Click += new System.EventHandler(this.cmdInsert_Click);
@@ -124,7 +124,7 @@
             this.cmdUpdate.Location = new System.Drawing.Point(28, 420);
             this.cmdUpdate.Name = "cmdUpdate";
             this.cmdUpdate.Size = new System.Drawing.Size(149, 30);
-            this.cmdUpdate.TabIndex = 11;
+            this.cmdUpdate.TabIndex = 9;
             this.cmdUpdate.Text = "Update";
             this.cmdUpdate.UseVisualStyleBackColor = true;
             this.cmdUpdate.Click += new System.EventHandler(this.cmdUpdate_Click);
@@ -135,7 +135,7 @@
             this.cmdDelete.Location = new System.Drawing.Point(28, 458);
             this.cmdDelete.Name = "cmdDelete";
             this.cmdDelete.Size = new System.Drawing.Size(149, 30);
-            this.cmdDelete.TabIndex = 12;
+            this.cmdDelete.TabIndex = 10;
             this.cmdDelete.Text = "Delete";
             this.cmdDelete.UseVisualStyleBackColor = true;
             this.cmdDelete.Click += new System.EventHandler(this.cmdDelete_Click);
@@ -159,7 +159,7 @@
             this.txtTableNum.Location = new System.Drawing.Point(31, 145);
             this.txtTableNum.Name = "txtTableNum";
             this.txtTableNum.Size = new System.Drawing.Size(40, 20);
-            this.txtTableNum.TabIndex = 14;
+            this.txtTableNum.TabIndex = 3;
             // 
             // label6
             // 
@@ -175,25 +175,25 @@
             this.txtDuration.Location = new System.Drawing.Point(31, 191);
             this.txtDuration.Name = "txtDuration";
             this.txtDuration.Size = new System.Drawing.Size(40, 20);
-            this.txtDuration.TabIndex = 18;
+            this.txtDuration.TabIndex = 4;
             // 
             // datePicker
             // 
             this.datePicker.Location = new System.Drawing.Point(31, 38);
-            this.datePicker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.datePicker.Margin = new System.Windows.Forms.Padding(2);
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(135, 20);
-            this.datePicker.TabIndex = 19;
+            this.datePicker.TabIndex = 1;
             this.datePicker.ValueChanged += new System.EventHandler(this.datePicker_ValueChanged);
             // 
             // timePicker
             // 
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.timePicker.Location = new System.Drawing.Point(31, 92);
-            this.timePicker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.timePicker.Margin = new System.Windows.Forms.Padding(2);
             this.timePicker.Name = "timePicker";
             this.timePicker.Size = new System.Drawing.Size(135, 20);
-            this.timePicker.TabIndex = 20;
+            this.timePicker.TabIndex = 2;
             this.timePicker.ValueChanged += new System.EventHandler(this.timePicker_ValueChanged);
             // 
             // label7
@@ -210,7 +210,7 @@
             this.txtGuestsNo.Location = new System.Drawing.Point(28, 344);
             this.txtGuestsNo.Name = "txtGuestsNo";
             this.txtGuestsNo.Size = new System.Drawing.Size(43, 20);
-            this.txtGuestsNo.TabIndex = 22;
+            this.txtGuestsNo.TabIndex = 7;
             // 
             // Form1
             // 
