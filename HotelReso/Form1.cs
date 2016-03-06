@@ -56,7 +56,7 @@ namespace HotelReso
 
                 //adding a filter to only see today's reservations
                 string todaysDate = today.ToLongDateString();
-                MessageBox.Show(todaysDate, "Today's Date");
+                //MessageBox.Show(todaysDate, "Today's Date");
                 string filter = "Date = '" + todaysDate + "'";
                 myView.RowFilter = filter;
 

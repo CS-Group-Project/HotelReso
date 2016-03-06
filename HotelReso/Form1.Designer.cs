@@ -97,6 +97,7 @@
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(28, 237);
+            this.txtName.MaxLength = 20;
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(147, 20);
             this.txtName.TabIndex = 5;
@@ -104,6 +105,7 @@
             // txtTel
             // 
             this.txtTel.Location = new System.Drawing.Point(28, 292);
+            this.txtTel.MaxLength = 12;
             this.txtTel.Name = "txtTel";
             this.txtTel.Size = new System.Drawing.Size(149, 20);
             this.txtTel.TabIndex = 6;
@@ -157,6 +159,7 @@
             // txtTableNum
             // 
             this.txtTableNum.Location = new System.Drawing.Point(31, 145);
+            this.txtTableNum.MaxLength = 1;
             this.txtTableNum.Name = "txtTableNum";
             this.txtTableNum.Size = new System.Drawing.Size(40, 20);
             this.txtTableNum.TabIndex = 3;
@@ -173,6 +176,7 @@
             // txtDuration
             // 
             this.txtDuration.Location = new System.Drawing.Point(31, 191);
+            this.txtDuration.MaxLength = 1;
             this.txtDuration.Name = "txtDuration";
             this.txtDuration.Size = new System.Drawing.Size(40, 20);
             this.txtDuration.TabIndex = 4;
@@ -208,6 +212,7 @@
             // txtGuestsNo
             // 
             this.txtGuestsNo.Location = new System.Drawing.Point(28, 344);
+            this.txtGuestsNo.MaxLength = 1;
             this.txtGuestsNo.Name = "txtGuestsNo";
             this.txtGuestsNo.Size = new System.Drawing.Size(43, 20);
             this.txtGuestsNo.TabIndex = 7;
