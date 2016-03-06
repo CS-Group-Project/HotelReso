@@ -64,22 +64,31 @@ namespace HotelReso
 
         private void cmdInsert_Click(object sender, EventArgs e)
         {
-            if(dataGood())
+            if(cmdInsert.Text.Equals("Return to Insert Mode"))
             {
-                if(isValidReservation("i"))
-                {
-                    DataRow dr = ds.Tables["tReservations"].NewRow();
-                    dr["TableNo"] = Convert.ToInt32(txtTableNum.Text);
-                    dr["Date"] = datePicker.Text;
-                    dr["Time"] = timePicker.Text;
-                    dr["Duration"] = Convert.ToDouble(txtDuration.Text);
-                    dr["Name"] = txtName.Text;
-                    dr["Telephone"] = txtTel.Text;
-                    dr["NumberOfGuests"] = txtGuestsNo.Text;
+                clearText();
+                setControlState("i");
+            }
 
-                    ds.Tables["tReservations"].Rows.Add(dr);
-                    updateDB();
-                    clearText();
+            else if (cmdInsert.Text.Equals("Insert"))
+            {
+                if (dataGood())
+                {
+                    if (isValidReservation("i"))
+                    {
+                        DataRow dr = ds.Tables["tReservations"].NewRow();
+                        dr["TableNo"] = Convert.ToInt32(txtTableNum.Text);
+                        dr["Date"] = datePicker.Text;
+                        dr["Time"] = timePicker.Text;
+                        dr["Duration"] = Convert.ToDouble(txtDuration.Text);
+                        dr["Name"] = txtName.Text;
+                        dr["Telephone"] = txtTel.Text;
+                        dr["NumberOfGuests"] = txtGuestsNo.Text;
+
+                        ds.Tables["tReservations"].Rows.Add(dr);
+                        updateDB();
+                        clearText();
+                    }
                 }
             }
         }
@@ -119,28 +128,30 @@ namespace HotelReso
             }
         }
 
-        private string isLeapYear(string year)
-        {
-            string whichYear = null;
+        //leap year validation not needed since we're using date pickers
 
-            if(Convert.ToInt32(year) % 4 != 0)
-            {
-                whichYear = "c";
-            }
-            else if(Convert.ToInt32(year) % 100 != 0 )
-            {
-                whichYear = "l";
-            }
-            else if(Convert.ToInt32(year) % 400 != 0)
-            {
-                whichYear = "c";
-            }
-            else
-            {
-                whichYear = "l";
-            }
-            return whichYear;
-        }
+        //private string isLeapYear(string year)
+        //{
+        //    string whichYear = null;
+
+        //    if(Convert.ToInt32(year) % 4 != 0)
+        //    {
+        //        whichYear = "c";
+        //    }
+        //    else if(Convert.ToInt32(year) % 100 != 0 )
+        //    {
+        //        whichYear = "l";
+        //    }
+        //    else if(Convert.ToInt32(year) % 400 != 0)
+        //    {
+        //        whichYear = "c";
+        //    }
+        //    else
+        //    {
+        //        whichYear = "l";
+        //    }
+        //    return whichYear;
+        //}
 
         private void clearText()
         {
@@ -150,6 +161,7 @@ namespace HotelReso
             txtDuration.Text = "";
             txtName.Text = "";
             txtTel.Text = "";
+            txtGuestsNo.Text = "";
             datePicker.Focus();
             dg1.ClearSelection();
         }
@@ -201,6 +213,13 @@ namespace HotelReso
                     }
                 }
             }
+            if (state.Equals("u"))
+            {
+                //criteria
+                //can't change the start time if an earlier reservation exist for that table
+                //can't change table number if a table is alreay occupied
+                //can't increase guest number if there are no tables left to allocate OR if increaseing guests will exceed the maximum capacity of 32
+            }
             return true;
         }
 
@@ -209,13 +228,15 @@ namespace HotelReso
             if (state.Equals("i"))
             {
                 cmdInsert.Enabled = true;
+                cmdInsert.Text = "Insert";
                 cmdUpdate.Enabled = false;
                 cmdDelete.Enabled = false;
                 clearText();
             }
             if (state.Equals("u/d"))
             {
-                cmdInsert.Enabled = false;
+                cmdInsert.Enabled = true;
+                cmdInsert.Text = "Return to Insert Mode";
                 cmdUpdate.Enabled = true;
                 cmdDelete.Enabled = true;
             }
@@ -232,6 +253,7 @@ namespace HotelReso
             txtDuration.Text = dg1.CurrentRow.Cells[3].Value.ToString();
             txtName.Text = dg1.CurrentRow.Cells[4].Value.ToString();
             txtTel.Text = dg1.CurrentRow.Cells[5].Value.ToString();
+            txtGuestsNo.Text = dg1.CurrentRow.Cells[6].Value.ToString();
             setControlState("u/d");
         }
 
