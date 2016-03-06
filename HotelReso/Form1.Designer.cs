@@ -54,18 +54,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(28, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 13);
+            this.label1.Size = new System.Drawing.Size(30, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Date (YYYY/MM/DD)";
+            this.label1.Text = "Date";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(28, 76);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Time (1500)";
+            this.label2.Text = "Time";
             // 
             // label3
             // 
@@ -180,6 +180,7 @@
             this.txtDuration.Name = "txtDuration";
             this.txtDuration.Size = new System.Drawing.Size(40, 20);
             this.txtDuration.TabIndex = 4;
+            this.txtDuration.Text = "2";
             // 
             // datePicker
             // 
@@ -196,6 +197,7 @@
             this.timePicker.Location = new System.Drawing.Point(31, 92);
             this.timePicker.Margin = new System.Windows.Forms.Padding(2);
             this.timePicker.Name = "timePicker";
+            this.timePicker.ShowUpDown = true;
             this.timePicker.Size = new System.Drawing.Size(135, 20);
             this.timePicker.TabIndex = 2;
             this.timePicker.ValueChanged += new System.EventHandler(this.timePicker_ValueChanged);
