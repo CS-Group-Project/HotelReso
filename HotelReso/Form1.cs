@@ -17,6 +17,13 @@ namespace HotelReso
         private SqlConnection conn = null;
         private SqlDataAdapter da = null;
         private DataSet ds = null;
+        private DataView myView = null;
+
+        //global variable for date in the date time format
+        //if you want to use current date just add today.Date
+        //if you want to use current time just add today.TimeOfDay
+        private DateTime today = DateTime.Today;
+
         private int rowIndex = 0;
 
         public Form1()
@@ -27,6 +34,7 @@ namespace HotelReso
         private void Form1_Load(object sender, EventArgs e)
         {
             getData();
+            getResosForCurrentDay(today.Date);
             dg1.Click += dg1_Click;
         }
 
@@ -44,7 +52,14 @@ namespace HotelReso
                 ds = new DataSet();
                 da.Fill(ds, "tReservations");
 
-                DataView myView = new DataView(ds.Tables["tReservations"]);
+                myView = new DataView(ds.Tables["tReservations"]);
+
+                //adding a filter to only see today's reservations
+                string todaysDate = today.ToLongDateString();
+                MessageBox.Show(todaysDate, "Today's Date");
+                string filter = "Date = '" + todaysDate + "'";
+                myView.RowFilter = filter;
+
                 dg1.DataSource = myView;
                 dg1.ClearSelection();
             }
@@ -61,6 +76,26 @@ namespace HotelReso
             }
         }
 
+        private void getResosForCurrentDay(DateTime today)
+        {
+            //string filter = "Date = '" + today.ToString() + "'";
+            //ds.Tables["tReservations"].DefaultView.RowFilter = filter;
+
+            //for(int i = 0; i < dg1.Rows.Count; i++)
+            //{
+            //    if(Convert.ToDateTime(dg1.Rows[i].Cells[0].Value).Date.Equals(today))
+            //    {
+            //        dg1.Rows[i].Visible = true;
+            //        MessageBox.Show(today.ToString(), "todays date");
+            //    }
+            //    else
+            //    {
+            //        dg1.Rows[i].Visible = false;
+            //    }
+            //}
+
+            //MessageBox.Show(today.ToString(), "todays date");
+        }
 
         private void cmdInsert_Click(object sender, EventArgs e)
         {
@@ -259,6 +294,30 @@ namespace HotelReso
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
+            //*** DO NOT DELETE***//
+            //trying to display reservations for the selected date
+            //DateTime selectedDate = datePicker.Value.Date;
+            //for (int i = 0; i < dg1.Rows.Count; i++)
+            //{
+
+            //    if(selectedDate.CompareTo(Convert.ToDateTime(dg1.Rows[i].Cells[0].Value).Date) == 0)
+            //    {
+            //        dg1.Rows[i].Visible = true;
+            //    }
+            //    else
+            //    {
+            //        dg1.Rows[i].Visible = false;
+            //    }
+            //}
+
+            string selectedDate = datePicker.Value.Date.ToLongDateString();
+            string filter = "Date = '" + selectedDate + "'";
+            //MessageBox.Show(filter, "Selected Date");
+            myView.RowFilter = filter;
+
+            //no need to bind ??
+            //dg1.DataSource = myView;
+            //dg1.ClearSelection();
 
         }
 
