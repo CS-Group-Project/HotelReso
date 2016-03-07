@@ -37,6 +37,36 @@ namespace HotelReso
             getResosForCurrentDay(today.Date);
             dg1.Click += dg1_Click;
             txtGuestsNo.KeyPress += txtGuestsNo_KeyPress;
+            txtTel.KeyPress += txtTel_KeyPress;
+        }
+
+        void txtTel_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+            int len = txtTel.Text.Length;
+            txtTel.SelectionStart = len;
+
+            if (c != 8)
+            {
+                if (len == 3 || len == 7) //dash only
+                {
+                    if (c != 45) //not a dash
+                    {
+                        //kill char
+                        e.Handled = true; //means we will handle the delivery of the char
+                        //dont need to change anything because it won't let it through unless
+                        //..it's the correct one
+                    }
+                }
+                else //numeric digit only
+                {
+                    if (c < 48 || c > 57) //not a number
+                    {
+                        //kill char
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         //method which ensures correct input (1-8) for number of people in the reservation
