@@ -36,6 +36,21 @@ namespace HotelReso
             getData();
             getResosForCurrentDay(today.Date);
             dg1.Click += dg1_Click;
+            txtGuestsNo.KeyPress += txtGuestsNo_KeyPress;
+        }
+
+        //method which ensures correct input (1-8) for number of people in the reservation
+        void txtGuestsNo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+
+            if (c != 8)
+            {
+                if (c < 49 || c > 56)
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
 
