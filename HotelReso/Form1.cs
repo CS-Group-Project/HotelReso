@@ -37,52 +37,10 @@ namespace HotelReso
             getResosForCurrentDay(today.Date);
             dg1.Click += dg1_Click;
             txtGuestsNo.KeyPress += txtGuestsNo_KeyPress;
-            txtTel.KeyPress += txtTel_KeyPress;
-        }
-
-        void txtTel_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char c = e.KeyChar;
-            int len = txtTel.Text.Length;
-            txtTel.SelectionStart = len;
-
-            if (c != 8)
-            {
-                if (len == 3 || len == 7) //dash only
-                {
-                    if (c != 45) //not a dash
-                    {
-                        //kill char
-                        e.Handled = true; //means we will handle the delivery of the char
-                        //dont need to change anything because it won't let it through unless
-                        //..it's the correct one
-                    }
-                }
-                else //numeric digit only
-                {
-                    if (c < 48 || c > 57) //not a number
-                    {
-                        //kill char
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
-
-        //method which ensures correct input (1-8) for number of people in the reservation
-        void txtGuestsNo_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char c = e.KeyChar;
-
-            if (c != 8)
-            {
-                if (c < 49 || c > 56)
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
+            timePicker.CustomFormat = "hh:mm";
+            timePicker.Format = DateTimePickerFormat.Custom;
+            timePicker.Text = "06:00";
+        }        
 
         private void getData()
         {
@@ -140,6 +98,20 @@ namespace HotelReso
             //}
 
             //MessageBox.Show(today.ToString(), "todays date");
+        }
+
+        //method which ensures correct input (1-8) for number of people in the reservation
+        void txtGuestsNo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+
+            if (c != 8)
+            {
+                if (c < 49 || c > 56)
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
         private void cmdInsert_Click(object sender, EventArgs e)
@@ -293,7 +265,7 @@ namespace HotelReso
                     DateTime currentResoStartTime = Convert.ToDateTime(dg1.Rows[i].Cells[1].Value.ToString());
                     DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
-                    //add the duration timespan to rescord being inserted
+                    //add the duration timespan to record being inserted
                     DateTime newResoEndTime = timePicker.Value.Add(newDuration);
 
                     //compare the reservation i end time to incoming reservation start time
@@ -481,10 +453,65 @@ namespace HotelReso
 
         private void timePicker_ValueChanged(object sender, EventArgs e)
         {
+            //grab time entered as a string
+            string time = timePicker.Text;
+            
+            //establish the parameter the string will be split by
+            char[] timeDelim = {':'};
+            
+            //create string array to hold what is returned by the split method
+            string[] timeValueSplit = {""};
 
+            //split the time up using : as a delimiter
+            timeValueSplit = time.ToString().Split(timeDelim);
+            
+            //get the hour value to an int
+            int compareHour = timePicker.Value.Hour;
+
+            //compare if hour value is within acceptable range, if not display error message
+            if (compareHour < 6 || compareHour > 10)
+            {
+                string message = "A reservation can only be made between 6:00 and 10:00";
+                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+            }
+
+            //get the minute value to an int
+            int compareMin = timePicker.Value.Minute;           
+            if (compareHour != 10)
+            {
+                if (compareMin < 15)
+                {
+                    timeValueSplit[1] = "00";
+                    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+                }
+                else if (compareMin >= 15 && compareMin < 30)
+                {
+                    timeValueSplit[1] = "30";
+                    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+                }
+                else if (compareMin > 30 && compareMin < 45)
+                {
+                    timeValueSplit[1] = "30";
+                    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+                }
+                else if (compareMin >= 45)
+                {
+                    timeValueSplit[1] = "00";
+                    if (timePicker.Value.Hour < 10)
+                    {
+                        compareHour += 1;
+                        timeValueSplit[0] = compareHour.ToString();
+                        timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+                    }
+                }
+
+            }
+            else
+            {
+                timeValueSplit[1] = "00";
+                timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+            }                
         }
 
-        
-        //add form load
     }
 }
