@@ -123,6 +123,7 @@ namespace HotelReso
                         ds.Tables["tReservations"].Rows.Add(dr);
                         updateDB();
                         clearText();
+                        MessageBox.Show("Reservation succesfully inserted", "Successful Reservation");
                     }
                 }
             }
@@ -145,7 +146,8 @@ namespace HotelReso
 
                     //ds.Tables["tReservations"].Rows.Add(dr);
                     updateDB();
-                    setControlState("i");
+                    setControlState("u/d");
+                    MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
 
                 }
             }
@@ -209,7 +211,7 @@ namespace HotelReso
 
         private void clearText()
         {
-            datePicker.Text = "";
+           // datePicker.Text = "";
             timePicker.Text = "";
             txtTableNum.Text = "";
             txtDuration.Text = "2";
@@ -232,18 +234,27 @@ namespace HotelReso
             {
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
-                    //gets the duration hours of each row
+                    //gets the duration hours of each existing reservation
                     int durationHours = Convert.ToInt32(dg1.Rows[i].Cells[3].Value);
+
+                    //gets the duration hours of new reservation
+                    int newResoDuration = Convert.ToInt32(txtDuration.Text);
                     
                     //make a timespan new timespan struct using the duratino hours for i reservation
                     TimeSpan duration = new TimeSpan(durationHours, 0, 0);
+                    TimeSpan newDuration = new TimeSpan(newResoDuration, 0, 0);
 
                     //add the duration timespan to reservation i start time
                     DateTime currentResoStartTime = Convert.ToDateTime(dg1.Rows[i].Cells[1].Value.ToString());
                     DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
+                    //add the duration timespan to rescord being inserted
+                    DateTime newResoEndTime = timePicker.Value.Add(newDuration);
+
                     //compare the reservation i end time to incoming reservation start time
-                    int compareTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+                    //compare the reservation i start time to incoming reservation end time
+                    int compareStartTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+                    int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
 
                     if(datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
                     {
@@ -256,7 +267,7 @@ namespace HotelReso
                                 return false;
                             }
                             // compareTime returns -1 if t1 is earlier than t2
-                            else if(compareTime < 0)
+                            else if(compareStartTime < 0 && compareEndTime > 0)
                             {
                                 string message = "An earlier reservation for this table finishes at " + currentResoEndTime + ". Please select a later time or a different table";
                                 MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -280,18 +291,27 @@ namespace HotelReso
                     
                     if (i != dg1.CurrentRow.Index)
                     {
-                        //gets the duration hours of each row
+                        //gets the duration hours of each existing reservation
                         int durationHours = Convert.ToInt32(dg1.Rows[i].Cells[3].Value);
-                        
+
+                        //gets the duration hours of new reservation
+                        int newResoDuration = Convert.ToInt32(txtDuration.Text);
+
                         //make a timespan new timespan struct using the duratino hours for i reservation
                         TimeSpan duration = new TimeSpan(durationHours, 0, 0);
+                        TimeSpan newDuration = new TimeSpan(newResoDuration, 0, 0);
 
                         //add the duration timespan to reservation i start time
                         DateTime currentResoStartTime = Convert.ToDateTime(dg1.Rows[i].Cells[1].Value.ToString());
                         DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
+                        //add the duration timespan to rescord being inserted
+                        DateTime newResoEndTime = timePicker.Value.Add(newDuration);
+
                         //compare the reservation i end time to incoming reservation start time
-                        int compareTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+                        //compare the reservation i start time to incoming reservation end time
+                        int compareStartTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+                        int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
 
                         if (datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
                         {
@@ -304,29 +324,31 @@ namespace HotelReso
                                     return false;
                                 }
                                 // compareTime returns -1 if t1 is earlier than t2
-                                else if (compareTime < 0)
+                                else if (compareStartTime < 0 && compareEndTime > 0)
                                 {
-                                    if (!txtDuration.Text.Equals("2"))
-                                    {
-                                        MessageBox.Show(txtDuration.Text, "Duration Changed");
-                                        TimeSpan newDuration = new TimeSpan(Convert.ToInt32(txtDuration.Text), 0, 0);
-                                        DateTime newEndTime = selectedResoStartTime.Add(newDuration);
-                                        int compareNewTime = DateTime.Compare(currentResoStartTime, newEndTime);
-                                        if (compareNewTime < 0)
-                                        {
-                                            MessageBox.Show("A reservation already exists for this table that starts before this reservation ends. Please select another table", "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                        }
-                                        txtTableNum.Focus();
-                                        return false;
 
-                                    }
-                                    else
-                                    {
-                                        string message = "An earlier reservation for this table finishes at " + currentResoEndTime + ". Please select a later time or a different table";
-                                        MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                        txtTableNum.Focus();
-                                        return false;
-                                    }
+                                    string message = "An reservation alreayd exists for this table that starts at " + currentResoStartTime + " and finishes at " + currentResoEndTime.ToShortTimeString() + ". Please select a later time or a different table";
+                                    MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    txtTableNum.Focus();
+                                    return false;
+                                    //if (!txtDuration.Text.Equals("2"))
+                                    //{
+                                    //    MessageBox.Show(txtDuration.Text, "Duration Changed");
+                                    //    TimeSpan newDuration = new TimeSpan(Convert.ToInt32(txtDuration.Text), 0, 0);
+                                    //    DateTime newEndTime = selectedResoStartTime.Add(newDuration);
+                                    //    int compareNewTime = DateTime.Compare(currentResoStartTime, newEndTime);
+                                    //    if (compareNewTime < 0)
+                                    //    {
+                                    //        MessageBox.Show("A reservation already exists for this table that starts before this reservation ends. Please select another table", "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    //    }
+                                    //    txtTableNum.Focus();
+                                    //    return false;
+
+                                    //}
+                                    //else
+                                    //{
+                                        
+                                    //}
                                 }
                                
                             }
@@ -388,15 +410,15 @@ namespace HotelReso
             //        dg1.Rows[i].Visible = false;
             //    }
             //}
-
+            
             string selectedDate = datePicker.Value.Date.ToLongDateString();
             string filter = "Date = '" + selectedDate + "'";
             //MessageBox.Show(filter, "Selected Date");
             myView.RowFilter = filter;
-
+            setControlState("i");
             //no need to bind ??
-            //dg1.DataSource = myView;
-            //dg1.ClearSelection();
+            dg1.DataSource = myView;
+            dg1.ClearSelection();
 
         }
 
