@@ -395,11 +395,23 @@ namespace HotelReso
                                         
                                     //}
                                 }
-                               
+                             
                             }
                         }
                     }
                 }
+            }
+            return true;
+        }
+
+        private bool validateDuration(string durString)
+        {
+            int duration = Convert.ToInt32(durString);
+            //reservationTime
+            int resTime = timePicker.Value.Hour;
+            if ((resTime + duration) > 12)
+            {
+                return false;
             }
             return true;
         }
