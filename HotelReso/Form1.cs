@@ -28,6 +28,38 @@ namespace HotelReso
         {
             getData();
             dg1.Click += dg1_Click;
+            txtTel.KeyPress += txtTel_KeyPress;
+            Console.WriteLine(timePicker.Text);
+
+        }
+
+
+        //Radha: Phone Number Validation
+        void txtTel_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+            int len = txtTel.Text.Length;
+            txtTel.SelectionStart = len;
+
+            if (c != 8)
+            {
+                if (len == 3 || len == 7) //dash only
+                {
+                    if (c != 45) //not a dash
+                    {
+                        //kill char
+                        e.Handled = true; 
+                    }
+                }
+                else //numeric digit only
+                {
+                    if (c < 48 || c > 57) //not a number
+                    {
+                        //kill char
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
 
@@ -182,6 +214,7 @@ namespace HotelReso
             }
             return true;
         }
+
 
         private void setControlState(string state)
         {
