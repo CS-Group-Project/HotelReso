@@ -41,8 +41,22 @@ namespace HotelReso
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.Text = "06:00";
             txtName.KeyPress += txtName_KeyPress;
+            txtDuration.KeyPress += txtDuration_KeyPress;
             //timePicker.KeyDown += timePicker_KeyDown;
             //timePicker.KeyUp += timePicker_KeyUp;
+        }
+
+        void txtDuration_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+
+            if (c != 8)
+            {
+                if (c < 50 || c > 54)
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
         void txtName_KeyPress(object sender, KeyPressEventArgs e)
