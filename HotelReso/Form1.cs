@@ -40,92 +40,21 @@ namespace HotelReso
             timePicker.CustomFormat = "hh:mm";
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.Text = "06:00";
-            txtDuration.KeyPress += txtDuration_KeyPress;
-            txtName.KeyPress += txtName_KeyPress;
+            //timePicker.KeyDown += timePicker_KeyDown;
+            //timePicker.KeyUp += timePicker_KeyUp;
         }
 
-        void txtName_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char c = e.KeyChar;
-            int len = ((TextBox)sender).Text.Length;
-            ((TextBox)sender).SelectionStart = len;
+        //void timePicker_KeyUp(object sender, KeyEventArgs e)
+        //{            
+            
+            
+        //}
 
-            if (c != 8) //allows backspace always!!
-            {
-                if ((c < 65 || c > 90) && (c < 97 || c > 122) && (c != 32))
-                {
-                    //not letter and not space, dont allow it
-                    e.Handled = true;
-                }
-                if (len < 2)
-                {
-                    if (len == 0 && c == 32) //a space
-                    {
-                        e.Handled = true;
-                    }
-                    else if (len == 0 && (c > 96 && c < 123))
-                    {
-                        //lower case char
-                        e.KeyChar = (char)(c - 32);
-                    }
-                    else if (len > 0 && (c > 64 && c < 91))
-                    {
-                        //upper case
-                        e.KeyChar = (char)(c + 32);
-                    }
-                }
-                if (len >= 2)
-                {
-                    if (((TextBox)sender).Text.IndexOf(" ") == -1)
-                    {
-                        //no space...char for first name
-                        if (c > 64 && c < 91)
-                        {
-                            //upper case char
-                            e.KeyChar = (char)(c + 32);
-                        }
-                    }
-                    else if (c == 32) //space
-                    {
-                        if (((TextBox)sender).Text.IndexOf(" ") > -1)
-                        {
-                            //space exists
-                            e.Handled = true;
-                        }
-                    }
-                    else if (((TextBox)sender).Text.IndexOf(" ") == len - 1)
-                    {
-                        if (c > 96 && c < 123) //lower case
-                        {
-                            e.KeyChar = (char)(c - 32);
-                        }
-                    }
-                    else if (((TextBox)sender).Text.IndexOf(" ") < len - 1)
-                    {
-                        //one or more chars after space
-                        if (c > 64 && c < 91)
-                        {
-                            e.KeyChar = (char)(c + 32);
-                        }
-                    }
-                }
-            }
-        }
-
-        void txtDuration_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char c = e.KeyChar;
+        //void timePicker_KeyDown(object sender, KeyEventArgs e)
+        //{
             
 
-            if (c != 8)
-            { 
-                //assuming that min duration is 2 hours
-                if (c < 50 || c > 54)
-                {
-                    e.Handled = true;
-                }
-            }
-        }        
+        //}        
 
         private void getData()
         {
@@ -460,7 +389,7 @@ namespace HotelReso
             }
             return true;
         }
-        
+
         private bool validateDuration(string durString)
         {
             int duration = Convert.ToInt32(durString);
@@ -472,7 +401,6 @@ namespace HotelReso
             }
             return true;
         }
-         
 
         private void setControlState(string state)
         {
@@ -534,22 +462,23 @@ namespace HotelReso
             //no need to bind ??
             dg1.DataSource = myView;
             dg1.ClearSelection();
+
         }
 
-        private void timePicker_ValueChanged(object sender, EventArgs e)
+       private void timePicker_ValueChanged(object sender, EventArgs e)
         {
             //grab time entered as a string
             string time = timePicker.Text;
-            
+
             //establish the parameter the string will be split by
-            char[] timeDelim = {':'};
-            
+            char[] timeDelim = { ':' };
+
             //create string array to hold what is returned by the split method
-            string[] timeValueSplit = {""};
+            string[] timeValueSplit = { "" };
 
             //split the time up using : as a delimiter
             timeValueSplit = time.ToString().Split(timeDelim);
-            
+
             //get the hour value to an int
             int compareHour = timePicker.Value.Hour;
 
@@ -557,11 +486,11 @@ namespace HotelReso
             if (compareHour < 6 || compareHour > 10)
             {
                 string message = "A reservation can only be made between 6:00 and 10:00";
-                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             //get the minute value to an int
-            int compareMin = timePicker.Value.Minute;           
+            int compareMin = timePicker.Value.Minute;
             if (compareHour != 10)
             {
                 if (compareMin < 15)
@@ -595,7 +524,7 @@ namespace HotelReso
             {
                 timeValueSplit[1] = "00";
                 timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-            }                
+            }                        
         }
 
     }
