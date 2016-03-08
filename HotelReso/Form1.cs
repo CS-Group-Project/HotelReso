@@ -235,9 +235,12 @@ namespace HotelReso
                         dr["NumberOfGuests"] = txtGuestsNo.Text;
 
                         ds.Tables["tReservations"].Rows.Add(dr);
-                        updateDB();
+                        if (updateDB())
+                        {
+                            MessageBox.Show("Reservation succesfully inserted", "Successful Reservation");
+                        }
                         clearText();
-                        MessageBox.Show("Reservation succesfully inserted", "Successful Reservation");
+                        
                     }
                 }
             }
@@ -259,9 +262,12 @@ namespace HotelReso
                     dr["NumberOfGuests"] = txtGuestsNo.Text;
 
                     //ds.Tables["tReservations"].Rows.Add(dr);
-                    updateDB();
+                    if(updateDB())
+                    {
+                         MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
+                    }
                     setControlState("u/d");
-                    MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
+                   
 
                 }
             }
@@ -277,7 +283,7 @@ namespace HotelReso
             setControlState("i");
         }
 
-        private void updateDB()
+        private bool updateDB()
         {
             try
             {
