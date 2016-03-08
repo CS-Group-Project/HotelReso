@@ -186,7 +186,7 @@
             // datePicker
             // 
             this.datePicker.Location = new System.Drawing.Point(31, 38);
-            this.datePicker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.datePicker.Margin = new System.Windows.Forms.Padding(2);
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(135, 20);
             this.datePicker.TabIndex = 1;
@@ -196,11 +196,12 @@
             // 
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.timePicker.Location = new System.Drawing.Point(31, 92);
-            this.timePicker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.timePicker.Margin = new System.Windows.Forms.Padding(2);
             this.timePicker.Name = "timePicker";
             this.timePicker.ShowUpDown = true;
             this.timePicker.Size = new System.Drawing.Size(51, 20);
             this.timePicker.TabIndex = 2;
+            this.timePicker.Value = new System.DateTime(2016, 3, 8, 18, 0, 0, 0);
             this.timePicker.ValueChanged += new System.EventHandler(this.timePicker_ValueChanged);
             // 
             // label7

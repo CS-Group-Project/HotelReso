@@ -293,6 +293,7 @@ namespace HotelReso
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.Message, "Error Updating Database");
+                return false;
 
             }
             finally
@@ -302,6 +303,7 @@ namespace HotelReso
                     conn.Close();
                 }
             }
+            return true;
         }
 
         //leap year validation not needed since we're using date pickers
