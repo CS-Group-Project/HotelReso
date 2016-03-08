@@ -549,11 +549,9 @@ namespace HotelReso
         }
 
        private void timePicker_ValueChanged(object sender, EventArgs e)
-       {
-           
+       {         
 
-           /*
-        
+          
             //grab time entered as a string
             string time = timePicker.Text;
 
@@ -612,7 +610,7 @@ namespace HotelReso
                 timeValueSplit[1] = "00";
                 timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
             }   
-           */          
+                   
         }
 
         
