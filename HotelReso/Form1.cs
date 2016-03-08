@@ -40,7 +40,21 @@ namespace HotelReso
             timePicker.CustomFormat = "hh:mm";
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.Text = "06:00";
-        }        
+            //timePicker.KeyDown += timePicker_KeyDown;
+            //timePicker.KeyUp += timePicker_KeyUp;
+        }
+
+        //void timePicker_KeyUp(object sender, KeyEventArgs e)
+        //{            
+            
+            
+        //}
+
+        //void timePicker_KeyDown(object sender, KeyEventArgs e)
+        //{
+            
+
+        //}        
 
         private void getData()
         {
@@ -451,20 +465,20 @@ namespace HotelReso
 
         }
 
-        private void timePicker_ValueChanged(object sender, EventArgs e)
+       private void timePicker_ValueChanged(object sender, EventArgs e)
         {
             //grab time entered as a string
             string time = timePicker.Text;
-            
+
             //establish the parameter the string will be split by
-            char[] timeDelim = {':'};
-            
+            char[] timeDelim = { ':' };
+
             //create string array to hold what is returned by the split method
-            string[] timeValueSplit = {""};
+            string[] timeValueSplit = { "" };
 
             //split the time up using : as a delimiter
             timeValueSplit = time.ToString().Split(timeDelim);
-            
+
             //get the hour value to an int
             int compareHour = timePicker.Value.Hour;
 
@@ -472,11 +486,11 @@ namespace HotelReso
             if (compareHour < 6 || compareHour > 10)
             {
                 string message = "A reservation can only be made between 6:00 and 10:00";
-                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             //get the minute value to an int
-            int compareMin = timePicker.Value.Minute;           
+            int compareMin = timePicker.Value.Minute;
             if (compareHour != 10)
             {
                 if (compareMin < 15)
@@ -510,7 +524,7 @@ namespace HotelReso
             {
                 timeValueSplit[1] = "00";
                 timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-            }                
+            }                        
         }
 
     }

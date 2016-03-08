@@ -46,6 +46,7 @@
             this.timePicker = new System.Windows.Forms.DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
             this.txtGuestsNo = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dg1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -210,7 +211,7 @@
             this.timePicker.Location = new System.Drawing.Point(46, 142);
             this.timePicker.Name = "timePicker";
             this.timePicker.ShowUpDown = true;
-            this.timePicker.Size = new System.Drawing.Size(200, 26);
+            this.timePicker.Size = new System.Drawing.Size(75, 26);
             this.timePicker.TabIndex = 2;
             this.timePicker.ValueChanged += new System.EventHandler(this.timePicker_ValueChanged);
             // 
@@ -233,11 +234,21 @@
             this.txtGuestsNo.Size = new System.Drawing.Size(62, 26);
             this.txtGuestsNo.TabIndex = 7;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(124, 144);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(32, 20);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "PM";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1490, 769);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.txtGuestsNo);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.timePicker);
@@ -286,6 +297,7 @@
         private System.Windows.Forms.DateTimePicker timePicker;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtGuestsNo;
+        private System.Windows.Forms.Label label8;
     }
 }
 
