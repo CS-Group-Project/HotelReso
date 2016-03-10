@@ -42,8 +42,33 @@ namespace HotelReso
             timePicker.Text = "06:00";
             txtName.KeyPress += txtName_KeyPress;
             txtDuration.KeyPress += txtDuration_KeyPress;
+            txtTel.KeyPress += txtTel_KeyPress;
             //timePicker.KeyDown += timePicker_KeyDown;
             //timePicker.KeyUp += timePicker_KeyUp;
+        }
+
+        void txtTel_KeyPress(object sender, KeyPressEventArgs e)    //Phone Number KeyPress 
+        {
+            char c = e.KeyChar;
+            int len = txtTel.Text.Length;
+            txtTel.SelectionStart = len;
+            if (c != 8)    //Check for backspace
+            {
+                if(len ==3 || len ==7)    //Check for -'s
+                {
+                    if (c != 45)
+                    {
+                        e.Handled = true;
+                    }
+                }
+                else   //Check for numbers
+                {
+                    if (c<48 || c>57)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         void txtDuration_KeyPress(object sender, KeyPressEventArgs e)
@@ -488,6 +513,22 @@ namespace HotelReso
             int resTime = timePicker.Value.Hour;
             if ((resTime + duration) > 12)
             {
+                return false;
+            }
+            return true;
+        }
+        private bool isValidPhoneNumber (string state)
+        {
+            if (txtTel.Text.Length <1) // Empty Phone Number
+            {
+                MessageBox.Show("Phone number Required!", "Missing Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTel.Focus();
+                return false;
+            }
+            if (txtTel.Text.Length !=12)   //Must be a full phone number
+            {
+                MessageBox.Show("Phone Numeber must be 12 digits", "Incorrect Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTel.Focus();
                 return false;
             }
             return true;
