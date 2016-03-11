@@ -43,8 +43,23 @@ namespace HotelReso
             txtName.KeyPress += txtName_KeyPress;
             txtDuration.KeyPress += txtDuration_KeyPress;
             txtTel.KeyPress += txtTel_KeyPress;
+            txtTableNum.KeyPress += txtTableNum_KeyPress;
             //timePicker.KeyDown += timePicker_KeyDown;
             //timePicker.KeyUp += timePicker_KeyUp;
+        }
+
+        void txtTableNum_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+            int len = txtTableNum.Text.Length;
+            txtTableNum.SelectionStart = len;
+            if (c != 8)
+            {
+                if (c <49 || c > 54)
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
         void txtTel_KeyPress(object sender, KeyPressEventArgs e)    //Phone Number KeyPress 
@@ -77,7 +92,7 @@ namespace HotelReso
 
             if (c != 8)
             {
-                if (c < 50 || c > 54)
+                if (c < 50 || c > 56)
                 {
                     e.Handled = true;
                 }
@@ -517,8 +532,9 @@ namespace HotelReso
             }
             return true;
         }
-        private bool isValidPhoneNumber (string state)
+        private bool isValidPhoneNumber ()
         {
+
             if (txtTel.Text.Length <1) // Empty Phone Number
             {
                 MessageBox.Show("Phone number Required!", "Missing Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -527,11 +543,21 @@ namespace HotelReso
             }
             if (txtTel.Text.Length !=12)   //Must be a full phone number
             {
-                MessageBox.Show("Phone Numeber must be 12 digits", "Incorrect Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Phone Number must be 12 digits", "Incorrect Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtTel.Focus();
                 return false;
             }
             return true;
+        }
+        private bool isValidTable ()
+        { 
+            if (txtTableNum.Text.Length <1) //Empty Table
+            {
+                MessageBox.Show("Table Number Required!", "Missing Table Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTableNum.Focus();
+                return false;
+            }
+           return true;
         }
 
         private void setControlState(string state)
