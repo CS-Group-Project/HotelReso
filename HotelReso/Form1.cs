@@ -601,64 +601,106 @@ namespace HotelReso
        {         
 
           
-            //grab time entered as a string
-            string time = timePicker.Text;
+            ////grab time entered as a string
+            //string time = timePicker.Text;
 
-            //establish the parameter the string will be split by
-            char[] timeDelim = { ':' };
+            ////establish the parameter the string will be split by
+            //char[] timeDelim = { ':' };
 
-            //create string array to hold what is returned by the split method
-            string[] timeValueSplit = { "" };
+            ////create string array to hold what is returned by the split method
+            //string[] timeValueSplit = { "" };
 
-            //split the time up using : as a delimiter
-            timeValueSplit = time.ToString().Split(timeDelim);
+            ////split the time up using : as a delimiter
+            //timeValueSplit = time.ToString().Split(timeDelim);
 
-            //get the hour value to an int
-            int compareHour = timePicker.Value.Hour;
+            ////get the hour value to an int
+            //int compareHour = timePicker.Value.Hour;
 
-            //compare if hour value is within acceptable range, if not display error message
-            if (compareHour < 6 || compareHour > 10)
-            {
-                string message = "A reservation can only be made between 6:00 and 10:00";
-                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            ////compare if hour value is within acceptable range, if not display error message
+            //if (compareHour < 6 || compareHour > 10)
+            //{
+            //    string message = "A reservation can only be made between 6:00 and 10:00";
+            //    MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
 
-            //get the minute value to an int
-            int compareMin = timePicker.Value.Minute;
-            if (compareHour != 10)
-            {
-                if (compareMin < 15)
-                {
-                    timeValueSplit[1] = "00";
-                    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-                }
-                else if (compareMin >= 15 && compareMin < 30)
-                {
-                    timeValueSplit[1] = "30";
-                    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-                }
-                else if (compareMin > 30 && compareMin < 45)
-                {
-                    timeValueSplit[1] = "30";
-                    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-                }
-                else if (compareMin >= 45)
-                {
-                    timeValueSplit[1] = "00";
-                    if (timePicker.Value.Hour < 10)
-                    {
-                        compareHour += 1;
-                        timeValueSplit[0] = compareHour.ToString();
-                        timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-                    }
-                }
+            ////get the minute value to an int
+            //int compareMin = timePicker.Value.Minute;
+            //if (compareHour != 10)
+            //{
+            //    if (compareMin < 15)
+            //    {
+            //        timeValueSplit[1] = "00";
+            //        timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+            //    }
+            //    else if (compareMin >= 15 && compareMin < 30)
+            //    {
+            //        timeValueSplit[1] = "30";
+            //        timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+            //    }
+            //    else if (compareMin > 30 && compareMin < 45)
+            //    {
+            //        timeValueSplit[1] = "30";
+            //        timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+            //    }
+            //    else if (compareMin >= 45)
+            //    {
+            //        timeValueSplit[1] = "00";
+            //        if (timePicker.Value.Hour < 10)
+            //        {
+            //            compareHour += 1;
+            //            timeValueSplit[0] = compareHour.ToString();
+            //            timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+            //        }
+            //    }
 
-            }
-            else
-            {
-                timeValueSplit[1] = "00";
-                timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-            }   
+            //}
+            //else
+            //{
+            //    timeValueSplit[1] = "00";
+            //    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
+            //} 
+  
+           DateTimePicker dtp = (DateTimePicker)sender;
+
+           if ((dtp.Value.Minute != 0) && (dtp.Value.Minute != 30))
+           {
+               if (dtp.Value.Minute == 1 || dtp.Value.Minute == 31)
+               {
+                   dtp.Value = dtp.Value.AddMinutes(29);
+
+               }
+
+               if (dtp.Value.Minute == 29)
+               {
+                   dtp.Value = dtp.Value.AddMinutes(-29);
+               }
+               if (dtp.Value.Minute == 59)
+               {
+                   dtp.Value = dtp.Value.AddMinutes(-89);
+               }
+           }
+
+           if ((dtp.Value.Minute > 1 && dtp.Value.Minute < 15))
+           {
+               int diff = dtp.Value.Minute;
+               dtp.Value = dtp.Value.AddMinutes(-diff);
+
+           }
+           if ((dtp.Value.Minute >= 15 && dtp.Value.Minute < 30))
+           {
+               int diff = dtp.Value.Minute;
+               dtp.Value = dtp.Value.AddMinutes(30 - diff);
+           }
+           if ((dtp.Value.Minute > 30 && dtp.Value.Minute < 45))
+           {
+               int diff = dtp.Value.Minute;
+               dtp.Value = dtp.Value.AddMinutes(30 - diff);
+           }
+           if ((dtp.Value.Minute >= 45 && dtp.Value.Minute <= 59))
+           {
+               int diff = dtp.Value.Minute;
+               dtp.Value = dtp.Value.AddMinutes(60 - diff);
+           }
                    
         }
 
