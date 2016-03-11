@@ -543,7 +543,7 @@ namespace HotelReso
             }
             if (txtTel.Text.Length !=12)   //Must be a full phone number
             {
-                MessageBox.Show("Phone Numeber must be 12 digits", "Incorrect Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Phone Number must be 12 digits", "Incorrect Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtTel.Focus();
                 return false;
             }
