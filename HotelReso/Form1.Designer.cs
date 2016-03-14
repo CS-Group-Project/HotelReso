@@ -238,7 +238,7 @@
             this.timePicker.FormattingEnabled = true;
             this.timePicker.Location = new System.Drawing.Point(46, 141);
             this.timePicker.Name = "timePicker";
-            this.timePicker.Size = new System.Drawing.Size(72, 28);
+            this.timePicker.Size = new System.Drawing.Size(79, 28);
             this.timePicker.TabIndex = 23;
             this.timePicker.Text = "6:00";
             // 

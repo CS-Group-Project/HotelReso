@@ -37,53 +37,19 @@ namespace HotelReso
             getResosForCurrentDay(today.Date);
             dg1.Click += dg1_Click;
             txtGuestsNo.KeyPress += txtGuestsNo_KeyPress;
-            timePicker.CustomFormat = "hh:mm";
-            timePicker.Format = DateTimePickerFormat.Custom;
-            timePicker.Text = "06:00";
+            timePicker.Items.Add("6:00");
+            timePicker.Items.Add("6:30");
+            timePicker.Items.Add("7:00");
+            timePicker.Items.Add("7:30");
+            timePicker.Items.Add("8:00");
+            timePicker.Items.Add("8:30");
+            timePicker.Items.Add("9:00");
+            timePicker.Items.Add("9:30");
+            timePicker.Items.Add("10:00");
             txtName.KeyPress += txtName_KeyPress;
             txtDuration.KeyPress += txtDuration_KeyPress;
-            txtTel.KeyPress += txtTel_KeyPress;
-            txtTableNum.KeyPress += txtTableNum_KeyPress;
             //timePicker.KeyDown += timePicker_KeyDown;
             //timePicker.KeyUp += timePicker_KeyUp;
-        }
-
-        void txtTableNum_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char c = e.KeyChar;
-            int len = txtTableNum.Text.Length;
-            txtTableNum.SelectionStart = len;
-            if (c != 8)
-            {
-                if (c <49 || c > 54)
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        void txtTel_KeyPress(object sender, KeyPressEventArgs e)    //Phone Number KeyPress 
-        {
-            char c = e.KeyChar;
-            int len = txtTel.Text.Length;
-            txtTel.SelectionStart = len;
-            if (c != 8)    //Check for backspace
-            {
-                if(len ==3 || len ==7)    //Check for -'s
-                {
-                    if (c != 45)
-                    {
-                        e.Handled = true;
-                    }
-                }
-                else   //Check for numbers
-                {
-                    if (c<48 || c>57)
-                    {
-                        e.Handled = true;
-                    }
-                }
-            }
         }
 
         void txtDuration_KeyPress(object sender, KeyPressEventArgs e)
@@ -92,7 +58,7 @@ namespace HotelReso
 
             if (c != 8)
             {
-                if (c < 50 || c > 56)
+                if (c < 50 || c > 54)
                 {
                     e.Handled = true;
                 }
@@ -129,7 +95,7 @@ namespace HotelReso
                         e.KeyChar = (char)(c + 32);
                     }
                 }
-                if(len >= 2)
+                if (len >= 2)
                 {
                     if (((TextBox)sender).Text.IndexOf(" ") == -1)
                     {
@@ -169,13 +135,13 @@ namespace HotelReso
 
         //void timePicker_KeyUp(object sender, KeyEventArgs e)
         //{            
-            
-            
+
+
         //}
 
         //void timePicker_KeyDown(object sender, KeyEventArgs e)
         //{
-            
+
 
         //}        
 
@@ -253,7 +219,7 @@ namespace HotelReso
 
         private void cmdInsert_Click(object sender, EventArgs e)
         {
-            if(cmdInsert.Text.Equals("Return to Insert Mode"))
+            if (cmdInsert.Text.Equals("Return to Insert Mode"))
             {
                 clearText();
                 setControlState("i");
@@ -280,7 +246,7 @@ namespace HotelReso
                             MessageBox.Show("Reservation succesfully inserted", "Successful Reservation");
                         }
                         clearText();
-                        
+
                     }
                 }
             }
@@ -302,12 +268,12 @@ namespace HotelReso
                     dr["NumberOfGuests"] = txtGuestsNo.Text;
 
                     //ds.Tables["tReservations"].Rows.Add(dr);
-                    if(updateDB())
+                    if (updateDB())
                     {
-                         MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
+                        MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
                     }
                     setControlState("u/d");
-                   
+
 
                 }
             }
@@ -315,7 +281,7 @@ namespace HotelReso
 
         private void cmdDelete_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("Are you sure you want to delete this reservation?", "Delete Reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to delete this reservation?", "Delete Reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
                 ds.Tables["tReservations"].Rows[rowIndex].Delete();
                 updateDB();
@@ -338,7 +304,7 @@ namespace HotelReso
             }
             finally
             {
-                if(conn != null)
+                if (conn != null)
                 {
                     conn.Close();
                 }
@@ -373,7 +339,7 @@ namespace HotelReso
 
         private void clearText()
         {
-           // datePicker.Text = "";
+            // datePicker.Text = "";
             timePicker.Text = "";
             txtTableNum.Text = "";
             txtDuration.Text = "2";
@@ -391,8 +357,8 @@ namespace HotelReso
 
         private bool isValidReservation(string state)
         {
-            
-            if(state.Equals("i"))
+
+            if (state.Equals("i"))
             {
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
@@ -401,7 +367,7 @@ namespace HotelReso
 
                     //gets the duration hours of new reservation
                     int newResoDuration = Convert.ToInt32(txtDuration.Text);
-                    
+
                     //make a timespan new timespan struct using the duratino hours for i reservation
                     TimeSpan duration = new TimeSpan(durationHours, 0, 0);
                     TimeSpan newDuration = new TimeSpan(newResoDuration, 0, 0);
@@ -411,25 +377,25 @@ namespace HotelReso
                     DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
                     //add the duration timespan to record being inserted
-                    DateTime newResoEndTime = timePicker.Value.Add(newDuration);
+                    DateTime newResoEndTime = Convert.ToDateTime(timePicker.SelectedValue).Add(newDuration);
 
                     //compare the reservation i end time to incoming reservation start time
                     //compare the reservation i start time to incoming reservation end time
-                    int compareStartTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+                    int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.SelectedValue), currentResoEndTime);
                     int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
 
-                    if(datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
+                    if (datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
                     {
-                        if(txtTableNum.Text.Equals(dg1.Rows[i].Cells[2].Value.ToString()))
+                        if (txtTableNum.Text.Equals(dg1.Rows[i].Cells[2].Value.ToString()))
                         {
-                            if(timePicker.Text.Equals(dg1.Rows[i].Cells[1].Value.ToString()))
+                            if (timePicker.Text.Equals(dg1.Rows[i].Cells[1].Value.ToString()))
                             {
                                 MessageBox.Show("A reservation already exists for this table at this time. Please select a different time or a different table", "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 txtTableNum.Focus();
                                 return false;
                             }
                             // compareTime returns -1 if t1 is earlier than t2
-                            else if(compareStartTime < 0 && compareEndTime > 0)
+                            else if (compareStartTime < 0 && compareEndTime > 0)
                             {
                                 string message = "An earlier reservation for this table finishes at " + currentResoEndTime + ". Please select a later time or a different table";
                                 MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -449,8 +415,8 @@ namespace HotelReso
 
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
-                    DateTime selectedResoStartTime = timePicker.Value;
-                    
+                    DateTime selectedResoStartTime = Convert.ToDateTime(timePicker.SelectedValue);
+
                     if (i != dg1.CurrentRow.Index)
                     {
                         //gets the duration hours of each existing reservation
@@ -468,11 +434,11 @@ namespace HotelReso
                         DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
                         //add the duration timespan to rescord being inserted
-                        DateTime newResoEndTime = timePicker.Value.Add(newDuration);
+                        DateTime newResoEndTime = Convert.ToDateTime(timePicker.SelectedValue).Add(newDuration);
 
                         //compare the reservation i end time to incoming reservation start time
                         //compare the reservation i start time to incoming reservation end time
-                        int compareStartTime = DateTime.Compare(timePicker.Value, currentResoEndTime);
+                        int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.SelectedValue), currentResoEndTime);
                         int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
 
                         if (datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
@@ -509,10 +475,10 @@ namespace HotelReso
                                     //}
                                     //else
                                     //{
-                                        
+
                                     //}
                                 }
-                             
+
                             }
                         }
                     }
@@ -525,39 +491,23 @@ namespace HotelReso
         {
             int duration = Convert.ToInt32(durString);
             //reservationTime
-            int resTime = timePicker.Value.Hour;
+            //grab time entered as a string
+            string time = timePicker.Text;
+
+            //establish the parameter the string will be split by
+            char[] timeDelim = { ':' };
+
+            //create string array to hold what is returned by the split method
+            string[] timeValueSplit = { "" };
+
+            //split the time up using : as a delimiter
+            timeValueSplit = time.ToString().Split(timeDelim);
+            int resTime = Convert.ToInt32(timeValueSplit[0]);
             if ((resTime + duration) > 12)
             {
                 return false;
             }
             return true;
-        }
-        private bool isValidPhoneNumber ()
-        {
-
-            if (txtTel.Text.Length <1) // Empty Phone Number
-            {
-                MessageBox.Show("Phone number Required!", "Missing Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTel.Focus();
-                return false;
-            }
-            if (txtTel.Text.Length !=12)   //Must be a full phone number
-            {
-                MessageBox.Show("Phone Number must be 12 digits", "Incorrect Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTel.Focus();
-                return false;
-            }
-            return true;
-        }
-        private bool isValidTable ()
-        { 
-            if (txtTableNum.Text.Length <1) //Empty Table
-            {
-                MessageBox.Show("Table Number Required!", "Missing Table Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTableNum.Focus();
-                return false;
-            }
-           return true;
         }
 
         private void setControlState(string state)
@@ -578,7 +528,7 @@ namespace HotelReso
                 cmdDelete.Enabled = true;
             }
         }
-      
+
         void dg1_Click(object sender, EventArgs e)
         {
             rowIndex = dg1.CurrentRow.Index;
@@ -596,6 +546,17 @@ namespace HotelReso
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
+            //ensures dates cannot be booked in the past
+            DateTimePicker compareTime = new DateTimePicker();
+            compareTime.Value = DateTime.Today;
+
+            if (datePicker.Value.CompareTo(compareTime.Value) < 0)
+            {
+                string message = "A reservation can not be made in the past!";
+                MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                datePicker.Value = DateTime.Today;
+            }
+
             //*** DO NOT DELETE***//
             //trying to display reservations for the selected date
             //DateTime selectedDate = datePicker.Value.Date;
@@ -611,22 +572,21 @@ namespace HotelReso
             //        dg1.Rows[i].Visible = false;
             //    }
             //}
-            
-            string selectedDate = datePicker.Value.Date.ToLongDateString();
-            string filter = "Date = '" + selectedDate + "'";
-            //MessageBox.Show(filter, "Selected Date");
-            myView.RowFilter = filter;
-            setControlState("i");
-            //no need to bind ??
-            dg1.DataSource = myView;
-            dg1.ClearSelection();
 
+            //string selectedDate = datePicker.Value.Date.ToLongDateString();
+            //string filter = "Date = '" + selectedDate + "'";
+            ////MessageBox.Show(filter, "Selected Date");
+            //myView.RowFilter = filter;
+            //setControlState("i");
+            ////no need to bind ??
+            //dg1.DataSource = myView;
+            //dg1.ClearSelection();            
         }
 
-       private void timePicker_ValueChanged(object sender, EventArgs e)
-       {         
+        private void timePicker_ValueChanged(object sender, EventArgs e)
+        {
 
-          
+
             ////grab time entered as a string
             //string time = timePicker.Text;
 
@@ -639,19 +599,16 @@ namespace HotelReso
             ////split the time up using : as a delimiter
             //timeValueSplit = time.ToString().Split(timeDelim);
 
-            ////get the hour value to an int
-            //int compareHour = timePicker.Value.Hour;
-
             ////compare if hour value is within acceptable range, if not display error message
-            //if (compareHour < 6 || compareHour > 10)
-            //{
+            //if (timePicker.Value.Hour < 6 || timePicker.Value.Hour > 10)
+            //{                
             //    string message = "A reservation can only be made between 6:00 and 10:00";
             //    MessageBox.Show(message, "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
 
-            ////get the minute value to an int
+            //get the minute value to an int
             //int compareMin = timePicker.Value.Minute;
-            //if (compareHour != 10)
+            //if (timePicker.Value.Hour != 10)
             //{
             //    if (compareMin < 15)
             //    {
@@ -673,6 +630,7 @@ namespace HotelReso
             //        timeValueSplit[1] = "00";
             //        if (timePicker.Value.Hour < 10)
             //        {
+            //            int compareHour = timePicker.Value.Hour;
             //            compareHour += 1;
             //            timeValueSplit[0] = compareHour.ToString();
             //            timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
@@ -684,50 +642,8 @@ namespace HotelReso
             //{
             //    timeValueSplit[1] = "00";
             //    timePicker.Text = timeValueSplit[0] + ":" + timeValueSplit[1];
-            //} 
-  
-           DateTimePicker dtp = (DateTimePicker)sender;
+            //}   
 
-           if ((dtp.Value.Minute != 0) && (dtp.Value.Minute != 30))
-           {
-               if (dtp.Value.Minute == 1 || dtp.Value.Minute == 31)
-               {
-                   dtp.Value = dtp.Value.AddMinutes(29);
-
-               }
-
-               if (dtp.Value.Minute == 29)
-               {
-                   dtp.Value = dtp.Value.AddMinutes(-29);
-               }
-               if (dtp.Value.Minute == 59)
-               {
-                   dtp.Value = dtp.Value.AddMinutes(-89);
-               }
-           }
-
-           if ((dtp.Value.Minute > 1 && dtp.Value.Minute < 15))
-           {
-               int diff = dtp.Value.Minute;
-               dtp.Value = dtp.Value.AddMinutes(-diff);
-
-           }
-           if ((dtp.Value.Minute >= 15 && dtp.Value.Minute < 30))
-           {
-               int diff = dtp.Value.Minute;
-               dtp.Value = dtp.Value.AddMinutes(30 - diff);
-           }
-           if ((dtp.Value.Minute > 30 && dtp.Value.Minute < 45))
-           {
-               int diff = dtp.Value.Minute;
-               dtp.Value = dtp.Value.AddMinutes(30 - diff);
-           }
-           if ((dtp.Value.Minute >= 45 && dtp.Value.Minute <= 59))
-           {
-               int diff = dtp.Value.Minute;
-               dtp.Value = dtp.Value.AddMinutes(60 - diff);
-           }
-                   
         }
 
         
