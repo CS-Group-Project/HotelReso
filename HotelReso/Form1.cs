@@ -54,6 +54,15 @@ namespace HotelReso
             txtTableNum.KeyPress += txtTableNum_KeyPress;
             //timePicker.KeyDown += timePicker_KeyDown;
             //timePicker.KeyUp += timePicker_KeyUp;
+
+            //get rid of the right click
+            timePicker.ContextMenuStrip = new ContextMenuStrip();
+            txtTableNum.ContextMenuStrip = new ContextMenuStrip();
+            txtDuration.ContextMenuStrip = new ContextMenuStrip();
+            txtName.ContextMenuStrip = new ContextMenuStrip();
+            txtTel.ContextMenuStrip = new ContextMenuStrip();
+            txtGuestsNo.ContextMenuStrip = new ContextMenuStrip();
+
             
         }
 
