@@ -37,19 +37,78 @@ namespace HotelReso
             getResosForCurrentDay(today.Date);
             dg1.Click += dg1_Click;
             txtGuestsNo.KeyPress += txtGuestsNo_KeyPress;
-            timePicker.Items.Add("6:00");
-            timePicker.Items.Add("6:30");
-            timePicker.Items.Add("7:00");
-            timePicker.Items.Add("7:30");
-            timePicker.Items.Add("8:00");
-            timePicker.Items.Add("8:30");
-            timePicker.Items.Add("9:00");
-            timePicker.Items.Add("9:30");
-            timePicker.Items.Add("10:00");
+            timePicker.Items.Add("18:00");
+            timePicker.Items.Add("18:30");
+            timePicker.Items.Add("19:00");
+            timePicker.Items.Add("19:30");
+            timePicker.Items.Add("20:00");
+            timePicker.Items.Add("20:30");
+            timePicker.Items.Add("21:00");
+            timePicker.Items.Add("21:30");
+            timePicker.Items.Add("22:00");
+            //timePicker.SelectedValue = timePicker.Items[0];
             txtName.KeyPress += txtName_KeyPress;
             txtDuration.KeyPress += txtDuration_KeyPress;
+            txtGuestsNo.KeyPress += txtGuestsNo_KeyPress;
+            txtTel.KeyPress += txtTel_KeyPress;
+            txtTableNum.KeyPress += txtTableNum_KeyPress;
             //timePicker.KeyDown += timePicker_KeyDown;
             //timePicker.KeyUp += timePicker_KeyUp;
+            
+        }
+
+        void txtTableNum_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+            int len = ((TextBox)sender).Text.Length;
+
+            if (c != 8)
+            {
+                if (len < 2)
+                {
+                    if (c < 49 || c > 56)
+                    {
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        void txtTel_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+            int len = ((TextBox)sender).Text.Length;
+            ((TextBox)sender).SelectionStart = len;
+
+            if (c != 8)
+            {
+                if (len < 12)
+                {
+                    if(len == 3 || len == 7)
+                    {
+                        if (c != 45)
+                        {
+                            e.Handled = true;
+                        }
+                    }
+                    else
+                    {
+                        if (c  < 48 || c > 57)
+                        {
+                            e.Handled = true;
+                        }
+                    }
+                }
+                else
+                {
+                    e.Handled = true;
+                }
+            }
+            
         }
 
         void txtDuration_KeyPress(object sender, KeyPressEventArgs e)
@@ -210,10 +269,15 @@ namespace HotelReso
 
             if (c != 8)
             {
-                if (c < 49 || c > 56)
+                if (c < 49 || c > 52)
                 {
                     e.Handled = true;
                 }
+                //if (c > 52 && c < 57)
+                //{
+                //    MessageBox.Show("A table can only accomadate 4 guests at a time. Please book another reservation for the remaining guests", "Too Many Guests per Table", MessageBoxButtons.OK);
+                //    e.Handled = true;
+                //}
             }
         }
 
@@ -284,7 +348,11 @@ namespace HotelReso
             if (MessageBox.Show("Are you sure you want to delete this reservation?", "Delete Reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
                 ds.Tables["tReservations"].Rows[rowIndex].Delete();
-                updateDB();
+                //updateDB();
+            }
+            if (updateDB())
+            {
+                MessageBox.Show("Reservation succesfully deleted", "Successful Deletion");
             }
             setControlState("i");
         }
@@ -309,6 +377,8 @@ namespace HotelReso
                     conn.Close();
                 }
             }
+            dg1.ClearSelection();
+            dg1.DataSource = myView;
             return true;
         }
 
@@ -360,6 +430,7 @@ namespace HotelReso
 
             if (state.Equals("i"))
             {
+                DateTime selectedStartTime = Convert.ToDateTime(timePicker.Text);
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
                     //gets the duration hours of each existing reservation
@@ -368,7 +439,7 @@ namespace HotelReso
                     //gets the duration hours of new reservation
                     int newResoDuration = Convert.ToInt32(txtDuration.Text);
 
-                    //make a timespan new timespan struct using the duratino hours for i reservation
+                    //make a new timespan struct using the duration hours for i reservation
                     TimeSpan duration = new TimeSpan(durationHours, 0, 0);
                     TimeSpan newDuration = new TimeSpan(newResoDuration, 0, 0);
 
@@ -377,11 +448,11 @@ namespace HotelReso
                     DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
                     //add the duration timespan to record being inserted
-                    DateTime newResoEndTime = Convert.ToDateTime(timePicker.SelectedValue).Add(newDuration);
+                    DateTime newResoEndTime = Convert.ToDateTime(timePicker.Text).Add(newDuration);
 
                     //compare the reservation i end time to incoming reservation start time
                     //compare the reservation i start time to incoming reservation end time
-                    int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.SelectedValue), currentResoEndTime);
+                    int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.Text), currentResoEndTime);
                     int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
 
                     if (datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
@@ -415,7 +486,7 @@ namespace HotelReso
 
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
-                    DateTime selectedResoStartTime = Convert.ToDateTime(timePicker.SelectedValue);
+                    DateTime selectedResoStartTime = Convert.ToDateTime(timePicker.Text);
 
                     if (i != dg1.CurrentRow.Index)
                     {
@@ -434,11 +505,11 @@ namespace HotelReso
                         DateTime currentResoEndTime = currentResoStartTime.Add(duration);
 
                         //add the duration timespan to rescord being inserted
-                        DateTime newResoEndTime = Convert.ToDateTime(timePicker.SelectedValue).Add(newDuration);
+                        DateTime newResoEndTime = Convert.ToDateTime(timePicker.Text).Add(newDuration);
 
                         //compare the reservation i end time to incoming reservation start time
                         //compare the reservation i start time to incoming reservation end time
-                        int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.SelectedValue), currentResoEndTime);
+                        int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.Text), currentResoEndTime);
                         int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
 
                         if (datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
