@@ -24,7 +24,7 @@ namespace HotelReso
         //if you want to use current time just add today.TimeOfDay
         private DateTime today = DateTime.Today;
 
-        private int rowIndex = 0;
+        private int rowIndex = -1;
 
         public Form1()
         {
@@ -440,17 +440,19 @@ namespace HotelReso
             if (state.Equals("i"))
             {
                 DateTime selectedStartTime = Convert.ToDateTime(timePicker.Text);
+                
+                //gets the duration hours of new reservation
+                int newResoDuration = Convert.ToInt32(txtDuration.Text);
+                TimeSpan newDuration = new TimeSpan(newResoDuration, 0, 0);
+
                 for (int i = 0; i < dg1.Rows.Count; i++)
                 {
                     //gets the duration hours of each existing reservation
                     int durationHours = Convert.ToInt32(dg1.Rows[i].Cells[3].Value);
 
-                    //gets the duration hours of new reservation
-                    int newResoDuration = Convert.ToInt32(txtDuration.Text);
-
                     //make a new timespan struct using the duration hours for i reservation
                     TimeSpan duration = new TimeSpan(durationHours, 0, 0);
-                    TimeSpan newDuration = new TimeSpan(newResoDuration, 0, 0);
+                    
 
                     //add the duration timespan to reservation i start time
                     DateTime currentResoStartTime = Convert.ToDateTime(dg1.Rows[i].Cells[1].Value.ToString());
@@ -473,6 +475,7 @@ namespace HotelReso
                                 MessageBox.Show("A reservation already exists for this table at this time. Please select a different time or a different table", "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 txtTableNum.Focus();
                                 return false;
+                                
                             }
                             // compareTime returns -1 if t1 is earlier than t2
                             else if (compareStartTime < 0 && compareEndTime > 0)
@@ -484,7 +487,27 @@ namespace HotelReso
                             }
                         }
                     }
+                    //if (!validateDuration(txtDuration.Text))
+                    //{
+                    //    MessageBox.Show("The duration for this reservation is past the closing time of the restaurant. Please select an appropriate duration", "Invalid Duration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //    return false;
+                    //}
+
+                    
                 }
+
+                //if(!isValidDuration(newDuration, selectedStartTime))
+                //{
+                //    MessageBox.Show("Invalid Duration", "Invalid duration");
+                //    return false;
+                //}
+
+                if(!validateDuration(txtDuration.Text))
+                {
+                    MessageBox.Show("Reservations must not exceed closing time", "Invalid duration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
             }
             if (state.Equals("u"))
             {
@@ -563,6 +586,11 @@ namespace HotelReso
                         }
                     }
                 }
+                if (!validateDuration(txtDuration.Text))
+                {
+                    MessageBox.Show("Reservations must not exceed closing time", "Invalid duration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
             return true;
         }
@@ -582,13 +610,40 @@ namespace HotelReso
 
             //split the time up using : as a delimiter
             timeValueSplit = time.ToString().Split(timeDelim);
-            int resTime = Convert.ToInt32(timeValueSplit[0]);
-            if ((resTime + duration) > 12)
+            double resHour = Convert.ToDouble(timeValueSplit[0]);
+            int resMin = Convert.ToInt32(timeValueSplit[1]);
+
+            if (resMin == 30)
+            {
+                resHour += 0.5;
+            }
+
+            if ((resHour + duration) > 24)
             {
                 return false;
             }
+
             return true;
         }
+
+        //private bool isValidDuration(TimeSpan duration, DateTime startTime)
+        //{
+        //    DateTime endTime = startTime.Add(duration);
+        //    DateTime resStartTime = datePicker.Value;
+        //    int year = resStartTime.Year;
+        //    int month = resStartTime.Month;
+        //    int day = resStartTime.Day;
+
+        //    DateTime restaurantStart = new DateTime(year, month, day, 18, 0, 0);
+        //    DateTime restaurantClose = new DateTime(year, month, day, 0, 0, 0);
+
+        //    if(endTime >= restaurantClose && endTime < restaurantStart)
+        //    {
+        //        //MessageBox.Show("Invalid duration", "Invalid Duration");
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         private void setControlState(string state)
         {
@@ -611,17 +666,31 @@ namespace HotelReso
 
         void dg1_Click(object sender, EventArgs e)
         {
-            rowIndex = dg1.CurrentRow.Index;
-
-            dg1.CurrentRow.Selected = true;
-            datePicker.Text = dg1.CurrentRow.Cells[0].Value.ToString();
-            timePicker.Text = dg1.CurrentRow.Cells[1].Value.ToString();
-            txtTableNum.Text = dg1.CurrentRow.Cells[2].Value.ToString();
-            txtDuration.Text = dg1.CurrentRow.Cells[3].Value.ToString();
-            txtName.Text = dg1.CurrentRow.Cells[4].Value.ToString();
-            txtTel.Text = dg1.CurrentRow.Cells[5].Value.ToString();
-            txtGuestsNo.Text = dg1.CurrentRow.Cells[6].Value.ToString();
-            setControlState("u/d");
+            try
+            {
+                rowIndex = dg1.CurrentRow.Index;
+                 
+                dg1.CurrentRow.Selected = true;
+                datePicker.Text = dg1.CurrentRow.Cells[0].Value.ToString();
+                timePicker.Text = dg1.CurrentRow.Cells[1].Value.ToString();
+                txtTableNum.Text = dg1.CurrentRow.Cells[2].Value.ToString();
+                txtDuration.Text = dg1.CurrentRow.Cells[3].Value.ToString();
+                txtName.Text = dg1.CurrentRow.Cells[4].Value.ToString();
+                txtTel.Text = dg1.CurrentRow.Cells[5].Value.ToString();
+                txtGuestsNo.Text = dg1.CurrentRow.Cells[6].Value.ToString();
+                setControlState("u/d");
+            }
+            catch (NullReferenceException nre)
+            {
+                MessageBox.Show("There are no current reservations for this date", "Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+            
+            
+            
+                
+            
+            
         }
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
