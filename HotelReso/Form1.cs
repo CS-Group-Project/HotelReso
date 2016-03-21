@@ -65,7 +65,6 @@ namespace HotelReso
             txtTel.ContextMenuStrip = new ContextMenuStrip();
             txtGuestsNo.ContextMenuStrip = new ContextMenuStrip();
 
-            
         }
 
         void txtTableNum_KeyPress(object sender, KeyPressEventArgs e)
@@ -232,7 +231,7 @@ namespace HotelReso
 
                 //adding a filter to only see today's reservations
                 string todaysDate = today.ToLongDateString();
-                //MessageBox.Show(todaysDate, "Today's Date");
+                MessageBox.Show(todaysDate, "Today's Date");
                 string filter = "Date = '" + todaysDate + "'";
                 myView.RowFilter = filter;
 
@@ -347,7 +346,7 @@ namespace HotelReso
                     {
                         MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
                     }
-                    setControlState("u/d");
+                    setControlState("i");
 
 
                 }
@@ -360,11 +359,12 @@ namespace HotelReso
             {
                 ds.Tables["tReservations"].Rows[rowIndex].Delete();
                 //updateDB();
+                if (updateDB())
+                {
+                    MessageBox.Show("Reservation succesfully deleted", "Successful Deletion");
+                }
             }
-            if (updateDB())
-            {
-                MessageBox.Show("Reservation succesfully deleted", "Successful Deletion");
-            }
+            
             setControlState("i");
         }
 
@@ -388,8 +388,8 @@ namespace HotelReso
                     conn.Close();
                 }
             }
-            dg1.ClearSelection();
-            dg1.DataSource = myView;
+            //dg1.ClearSelection();
+            //dg1.DataSource = myView;
             return true;
         }
 
@@ -559,7 +559,8 @@ namespace HotelReso
                             //compare the reservation i start time to incoming reservation end time
                             int compareStartTime = DateTime.Compare(Convert.ToDateTime(timePicker.Text), currentResoEndTime);
                             int compareEndTime = DateTime.Compare(newResoEndTime, currentResoStartTime);
-
+                            
+                          
                             if (datePicker.Text.Equals(dg1.Rows[i].Cells[0].Value.ToString()))
                             {
                                 if (txtTableNum.Text.Equals(dg1.Rows[i].Cells[2].Value.ToString()))
@@ -683,6 +684,7 @@ namespace HotelReso
             }
             if (state.Equals("u/d"))
             {
+                dg1.CurrentRow.Selected = true;
                 cmdInsert.Enabled = true;
                 cmdInsert.Text = "Return to Insert Mode";
                 cmdUpdate.Enabled = true;
@@ -693,10 +695,28 @@ namespace HotelReso
         void dg1_Click(object sender, EventArgs e)
         {
             try
-            {
-                rowIndex = dg1.CurrentRow.Index;
+            {        
                  
-                dg1.CurrentRow.Selected = true;
+                
+                rowIndex = dg1.CurrentRow.Index;
+
+                //align row index of selection with the row index of the dataset
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    //make sure youre NOT accessing rows set to be deleted
+                    //canot access rows when row state is set to deleted
+                    if (ds.Tables[0].Rows[i].RowState != DataRowState.Deleted)
+                    {
+                        if (dg1.CurrentRow.Cells[0].Value.ToString().Equals(ds.Tables[0].Rows[i][0].ToString()) && dg1.CurrentRow.Cells[1].Value.ToString().Equals(ds.Tables[0].Rows[i][1].ToString()) && dg1.CurrentRow.Cells[2].Value.ToString().Equals(ds.Tables[0].Rows[i][2].ToString()))
+                        {
+                            rowIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                //dg1.CurrentRow.Selected = true;
+
                 datePicker.Text = dg1.CurrentRow.Cells[0].Value.ToString();
                 timePicker.Text = dg1.CurrentRow.Cells[1].Value.ToString();
                 txtTableNum.Text = dg1.CurrentRow.Cells[2].Value.ToString();
@@ -710,11 +730,6 @@ namespace HotelReso
             {
                 MessageBox.Show("There are no current reservations for this date", "Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
-            
-            
-            
-                
             
             
         }
@@ -748,14 +763,32 @@ namespace HotelReso
             //    }
             //}
 
-            //string selectedDate = datePicker.Value.Date.ToLongDateString();
-            //string filter = "Date = '" + selectedDate + "'";
-            ////MessageBox.Show(filter, "Selected Date");
-            //myView.RowFilter = filter;
-            //setControlState("i");
-            ////no need to bind ??
-            //dg1.DataSource = myView;
-            //dg1.ClearSelection();            
+            string selectedDate = datePicker.Value.Date.ToLongDateString();
+            
+            if (dg1.SelectedRows.Count == 0)
+            {
+                
+                string filter = "Date = '" + selectedDate + "'";
+                //MessageBox.Show(filter, "Selected Date");
+                myView.RowFilter = filter;
+                //setControlState("i");
+                //no need to bind ??
+                //dg1.DataSource = myView;
+                dg1.ClearSelection();
+            }
+            else
+            {
+                string filter = "Date = '" + selectedDate + "'";
+                //MessageBox.Show(filter, "Selected Date");
+                myView.RowFilter = filter;
+                //setControlState("i");
+                //no need to bind ??
+                //dg1.DataSource = myView;
+                dg1.ClearSelection();
+                rowIndex = -1;
+            }
+           
+            
         }
 
         private void timePicker_ValueChanged(object sender, EventArgs e)
