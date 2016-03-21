@@ -690,6 +690,14 @@ namespace HotelReso
                 cmdUpdate.Enabled = true;
                 cmdDelete.Enabled = true;
             }
+            if (state.Equals("i/u"))
+            {
+                cmdInsert.Enabled = true;
+                cmdInsert.Text = "Insert";
+                cmdUpdate.Enabled = false;
+                cmdDelete.Enabled = false;
+         
+            }
         }
 
         void dg1_Click(object sender, EventArgs e)
@@ -764,7 +772,7 @@ namespace HotelReso
             //}
 
             string selectedDate = datePicker.Value.Date.ToLongDateString();
-            
+            rowIndex = dg1.CurrentRow.Index;
             if (dg1.SelectedRows.Count == 0)
             {
                 
@@ -781,11 +789,11 @@ namespace HotelReso
                 string filter = "Date = '" + selectedDate + "'";
                 //MessageBox.Show(filter, "Selected Date");
                 myView.RowFilter = filter;
-                //setControlState("i");
+                setControlState("i/u");
                 //no need to bind ??
-                //dg1.DataSource = myView;
+                dg1.DataSource = myView;
                 dg1.ClearSelection();
-                rowIndex = -1;
+                
             }
            
             
