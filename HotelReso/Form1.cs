@@ -216,7 +216,8 @@ namespace HotelReso
 
         private void getData()
         {
-            string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\PROG37721\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
+            //string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\PROG37721\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
+            string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\radhabhambwani\\Source\\Repos\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
             try
             {
                 conn = new SqlConnection(connStr);
@@ -495,6 +496,13 @@ namespace HotelReso
                                     return false;
                                 }
                             }
+                        }
+
+                        if (txtTel.Text.Length < 12)
+                        {
+                            MessageBox.Show("Phone number is in the wrong format. Please enter a 10-digit phone number", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            txtTableNum.Focus();
+                            return false;
                         }
                         //if (!validateDuration(txtDuration.Text))
                         //{
