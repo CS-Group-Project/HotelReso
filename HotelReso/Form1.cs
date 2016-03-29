@@ -216,8 +216,8 @@ namespace HotelReso
 
         private void getData()
         {
-            //string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\PROG37721\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
-            string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\radhabhambwani\\Source\\Repos\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
+            string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\PROG37721\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
+            //string connStr = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\radhabhambwani\\Source\\Repos\\HotelReso\\HotelReso\\Reservations.mdf;Integrated Security=True";
             try
             {
                 conn = new SqlConnection(connStr);
@@ -700,9 +700,9 @@ namespace HotelReso
             }
             if (state.Equals("i/u"))
             {
-                cmdInsert.Enabled = true;
+                cmdInsert.Enabled = false;
                 cmdInsert.Text = "Insert";
-                cmdUpdate.Enabled = false;
+                cmdUpdate.Enabled = true;
                 cmdDelete.Enabled = false;
          
             }
@@ -780,7 +780,7 @@ namespace HotelReso
             //}
 
             string selectedDate = datePicker.Value.Date.ToLongDateString();
-            rowIndex = dg1.CurrentRow.Index;
+            //rowIndex = dg1.CurrentRow.Index;
             if (dg1.SelectedRows.Count == 0)
             {
                 
