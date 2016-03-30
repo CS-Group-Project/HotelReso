@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -47,7 +48,9 @@
             this.txtGuestsNo = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.timePicker = new System.Windows.Forms.ComboBox();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dg1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -186,7 +189,7 @@
             // datePicker
             // 
             this.datePicker.Location = new System.Drawing.Point(31, 38);
-            this.datePicker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.datePicker.Margin = new System.Windows.Forms.Padding(2);
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(135, 20);
             this.datePicker.TabIndex = 1;
@@ -222,7 +225,7 @@
             // 
             this.timePicker.FormattingEnabled = true;
             this.timePicker.Location = new System.Drawing.Point(31, 92);
-            this.timePicker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.timePicker.Margin = new System.Windows.Forms.Padding(2);
             this.timePicker.Name = "timePicker";
             this.timePicker.Size = new System.Drawing.Size(54, 21);
             this.timePicker.TabIndex = 23;
@@ -256,6 +259,7 @@
             this.Text = "RESO";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dg1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -282,6 +286,7 @@
         private System.Windows.Forms.TextBox txtGuestsNo;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox timePicker;
+        private System.Windows.Forms.BindingSource bindingSource1;
     }
 }
 

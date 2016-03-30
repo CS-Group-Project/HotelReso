@@ -23,7 +23,8 @@ namespace HotelReso
         //if you want to use current date just add today.Date
         //if you want to use current time just add today.TimeOfDay
         private DateTime today = DateTime.Today;
-
+        private DateTime resoDate;
+        private DateTime selectedDate;  
         private int rowIndex = -1;
         private int changeDate = 0;
         public Form1()
@@ -226,15 +227,23 @@ namespace HotelReso
                 da = new SqlDataAdapter(sql, conn);
                 SqlCommandBuilder sb = new SqlCommandBuilder(da);
                 ds = new DataSet();
+                da.FillSchema(ds, SchemaType.Source, "tReservations");
                 da.Fill(ds, "tReservations");
+             
+                //bindingSource1.DataSource = ds;
+                //bindingSource1.DataMember = "tReservations";
+                //myView = new DataView();
 
-                myView = new DataView(ds.Tables["tReservations"]);
-
-                //adding a filter to only see today's reservations
                 string todaysDate = today.ToLongDateString();
-               // MessageBox.Show(todaysDate, "Today's Date");
                 string filter = "Date = '" + todaysDate + "'";
-                myView.RowFilter = filter;
+
+                myView = new DataView(ds.Tables["tReservations"], filter, "Date, Time, TableNo", DataViewRowState.CurrentRows);
+               // dg1.DataSource = bindingSource1;
+                //adding a filter to only see today's reservations
+                
+               // MessageBox.Show(todaysDate, "Today's Date");
+                
+                //myView.RowFilter = filter;
 
                 
                 dg1.DataSource = myView;
@@ -332,8 +341,8 @@ namespace HotelReso
         {
             if (dataGood())
             {
-                if(changeDate == 0)
-                {
+                //if(selectedDate == resoDate)
+                //{
                     if (isValidReservation("u"))
                     {
                         DataRow dr = ds.Tables["tReservations"].Rows[rowIndex];
@@ -353,30 +362,30 @@ namespace HotelReso
                         setControlState("i");
                     }
 
-                }
+                //}
                 
-                else if(changeDate == -1)
-                {
-                    if (isValidReservation("i"))
-                    {
-                        DataRow dr = ds.Tables["tReservations"].Rows[rowIndex];
-                        dr["TableNo"] = Convert.ToInt32(txtTableNum.Text);
-                        dr["Date"] = datePicker.Text;
-                        dr["Time"] = timePicker.Text;
-                        dr["Duration"] = Convert.ToDouble(txtDuration.Text);
-                        dr["Name"] = txtName.Text;
-                        dr["Telephone"] = txtTel.Text;
-                        dr["NumberOfGuests"] = txtGuestsNo.Text;
+                //else
+                //{
+                //    if (isValidReservation("i"))
+                //    {
+                //        DataRow dr = ds.Tables["tReservations"].Rows[rowIndex];
+                //        dr["TableNo"] = Convert.ToInt32(txtTableNum.Text);
+                //        dr["Date"] = datePicker.Text;
+                //        dr["Time"] = timePicker.Text;
+                //        dr["Duration"] = Convert.ToDouble(txtDuration.Text);
+                //        dr["Name"] = txtName.Text;
+                //        dr["Telephone"] = txtTel.Text;
+                //        dr["NumberOfGuests"] = txtGuestsNo.Text;
 
-                        //ds.Tables["tReservations"].Rows.Add(dr);
-                        if (updateDB())
-                        {
-                            MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
-                        }
-                        setControlState("i");
-                    }
-                    changeDate = 0;
-                }
+                //        //ds.Tables["tReservations"].Rows.Add(dr);
+                //        if (updateDB())
+                //        {
+                //            MessageBox.Show("Reservation succesfully updated", "Successful Reservation");
+                //        }
+                //        setControlState("i");
+                //    }
+                //    changeDate = 0;
+                //}
 
 
             }
@@ -572,7 +581,7 @@ namespace HotelReso
                     {
                         DateTime selectedResoStartTime = Convert.ToDateTime(timePicker.Text);
 
-                        if (i != dg1.CurrentRow.Index)
+                        if (i != rowIndex)
                         {
                             //gets the duration hours of each existing reservation
                             int durationHours = Convert.ToInt32(dg1.Rows[i].Cells[3].Value);
@@ -604,6 +613,7 @@ namespace HotelReso
                                     if (timePicker.Text.Equals(dg1.Rows[i].Cells[1].Value.ToString()))
                                     {
                                         MessageBox.Show("A reservation already exists for this table at this time. Please select a different time or a different table", "Invalid Reservation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        txtTableNum.Text = "";
                                         txtTableNum.Focus();
                                         return false;
                                     }
@@ -740,11 +750,10 @@ namespace HotelReso
         {
             try
             {
+                selectedDate = Convert.ToDateTime(dg1.CurrentRow.Cells[0].Value);
+                //rowIndex = dg1.CurrentRow.Index;
 
-                rowIndex = dg1.CurrentRow.Index;
-                //object [] key = {dg1.CurrentRow.Cells[0].Value.ToString(), dg1.CurrentRow.Cells[1].Value.ToString(), dg1.CurrentRow.Cells[2].Value.ToString()};
-                
-                //int myViewRowIndex = myView.Find(key);
+               
                 //MessageBox.Show(myViewRowIndex.ToString());
                 //align row index of selection with the row index of the dataset
                 //for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -772,6 +781,15 @@ namespace HotelReso
                 txtName.Text = dg1.CurrentRow.Cells[4].Value.ToString();
                 txtTel.Text = dg1.CurrentRow.Cells[5].Value.ToString();
                 txtGuestsNo.Text = dg1.CurrentRow.Cells[6].Value.ToString();
+
+                object[] key = { dg1.CurrentRow.Cells[0].Value.ToString(), dg1.CurrentRow.Cells[1].Value.ToString(), dg1.CurrentRow.Cells[2].Value.ToString() };
+                //object[] key = { txtTableNum.Text, datePicker.Text, timePicker.Text };
+                //rowIndex = myView.Find(key);
+                // rowIndex = ds.Tables["tReservations"].Rows.IndexOf
+                DataColumn[] pk = ds.Tables["tReservations"].PrimaryKey;
+                //object[] key = (object[])pk;
+                DataRow selectedRow = ds.Tables["tReservations"].Rows.Find(key);
+                rowIndex = ds.Tables["tReservations"].Rows.IndexOf(selectedRow);
                 setControlState("u/d");
             }
             catch (NullReferenceException nre)
@@ -810,35 +828,44 @@ namespace HotelReso
             //        dg1.Rows[i].Visible = false;
             //    }
             //}
-
+            resoDate = datePicker.Value;
             string selectedDate = datePicker.Value.Date.ToLongDateString();
             //rowIndex = dg1.CurrentRow.Index;
            
-            if (dg1.SelectedRows.Count == 0 )
-            {
+            //if (dg1.SelectedRows.Count == 0 )
+            //{
                 
-                string filter = "Date = '" + selectedDate + "'";
-                changeDate = -1;
-                //MessageBox.Show(filter, "Selected Date");
-                myView.RowFilter = filter;
-                //setControlState("i");
-                //no need to bind ??
-                //dg1.DataSource = myView;
-                dg1.ClearSelection();
-            }
-            else
-            {
-                rowIndex = dg1.CurrentRow.Index;
+            //    string filter = "Date = '" + selectedDate + "'";
+            //    changeDate = -1;
+            //    //MessageBox.Show(filter, "Selected Date");
+            //    myView.RowFilter = filter;
+            //    //setControlState("i");
+            //    //no need to bind ??
+            //    //dg1.DataSource = myView;
+            //    dg1.ClearSelection();
+            //}
+            //else
+            //{
+            //    rowIndex = dg1.CurrentRow.Index;
                
-                string filter = "Date = '" + selectedDate + "'";
-                //MessageBox.Show(filter, "Selected Date");
-                myView.RowFilter = filter;
-                setControlState("i/u");
-                //no need to bind ??
-                //dg1.DataSource = myView;
-                dg1.ClearSelection();
+            //    string filter = "Date = '" + selectedDate + "'";
+            //    //MessageBox.Show(filter, "Selected Date");
+            //    myView.RowFilter = filter;
+            //    setControlState("i/u");
+            //    //no need to bind ??
+            //    //dg1.DataSource = myView;
+            //    dg1.ClearSelection();
                 
-            }
+            //}
+
+            string filter = "Date = '" + selectedDate + "'";
+            changeDate = -1;
+            //MessageBox.Show(filter, "Selected Date");
+            myView.RowFilter = filter;
+            //setControlState("i");
+            //no need to bind ??
+            //dg1.DataSource = myView;
+            dg1.ClearSelection();
            
             
         }
