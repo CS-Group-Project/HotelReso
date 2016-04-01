@@ -472,6 +472,12 @@ namespace HotelReso
 
         private bool dataGood()
         {
+            if (txtTel.Text.Length < 12)
+            {
+                MessageBox.Show("Phone number is in the wrong format. Please enter a 10-digit phone number", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTableNum.Focus();
+                return false;
+            }
             return true;
         }
 
@@ -542,12 +548,7 @@ namespace HotelReso
                             }
                         }
 
-                        if (txtTel.Text.Length < 12)
-                        {
-                            MessageBox.Show("Phone number is in the wrong format. Please enter a 10-digit phone number", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            txtTableNum.Focus();
-                            return false;
-                        }
+
                         //if (!validateDuration(txtDuration.Text))
                         //{
                         //    MessageBox.Show("The duration for this reservation is past the closing time of the restaurant. Please select an appropriate duration", "Invalid Duration", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -700,6 +701,8 @@ namespace HotelReso
             {
                 return false;
             }
+
+
 
             return true;
         }
